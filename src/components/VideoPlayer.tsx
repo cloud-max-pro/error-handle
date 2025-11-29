@@ -19,6 +19,14 @@ export const VideoPlayer = ({ videoUrl, title }: VideoPlayerProps) => {
   const [volume, setVolume] = useState([100]);
   const [showControls, setShowControls] = useState(true);
 
+  if (!videoUrl) {
+    return (
+      <div className="w-full aspect-video bg-secondary rounded-lg flex items-center justify-center">
+        <p className="text-muted-foreground">No video available</p>
+      </div>
+    );
+  }
+
   const togglePlay = () => {
     if (videoRef.current) {
       if (isPlaying) {
