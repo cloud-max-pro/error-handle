@@ -1,4 +1,5 @@
-import { useParams, Link } from "react-router-dom";
+import { useState } from "react";
+import { useParams, Link, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Play, Star, Calendar, Tv, Film } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { VideoPlayer } from "@/components/VideoPlayer";
@@ -6,10 +7,19 @@ import { AnimeCard } from "@/components/AnimeCard";
 import { animeData } from "@/data/animeData";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Watch = () => {
   const { id } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const anime = animeData.find((item) => item.id === id);
+  
+  const [selectedSeason, setSelectedSeason] = useState(
+    searchParams.get('season') ? parseInt(searchParams.get('season')!) : 1
+  );
+  const [selectedEpisode, setSelectedEpisode] = useState(
+    searchParams.get('episode') ? parseInt(searchParams.get('episode')!) : 1
+  );
 
   if (!anime) {
     return (
@@ -27,9 +37,42 @@ const Watch = () => {
     );
   }
 
+  // Get current video URL
+  let currentVideoUrl = '';
+  let currentEpisodeTitle = '';
+  
+  if (anime.type === 'movie') {
+    currentVideoUrl = anime.videoUrl || '';
+    currentEpisodeTitle = anime.title;
+  } else if (anime.seasons) {
+    const season = anime.seasons.find(s => s.seasonNumber === selectedSeason);
+    if (season) {
+      const episode = season.episodes.find(e => e.episodeNumber === selectedEpisode);
+      if (episode) {
+        currentVideoUrl = episode.videoUrl;
+        currentEpisodeTitle = `S${selectedSeason} E${selectedEpisode}: ${episode.title}`;
+      }
+    }
+  }
+
+  const handleSeasonChange = (season: string) => {
+    const seasonNum = parseInt(season);
+    setSelectedSeason(seasonNum);
+    setSelectedEpisode(1);
+    setSearchParams({ season: season, episode: '1' });
+  };
+
+  const handleEpisodeClick = (episodeNum: number) => {
+    setSelectedEpisode(episodeNum);
+    setSearchParams({ season: selectedSeason.toString(), episode: episodeNum.toString() });
+  };
+
   const relatedAnime = animeData
     .filter((item) => item.id !== anime.id && item.genres.some((g) => anime.genres.includes(g)))
     .slice(0, 5);
+
+  const currentSeason = anime.seasons?.find(s => s.seasonNumber === selectedSeason);
+  const totalEpisodes = currentSeason?.episodes.length || 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -46,7 +89,10 @@ const Watch = () => {
 
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
-              <VideoPlayer videoUrl={anime.videoUrl} title={anime.title} />
+              <VideoPlayer 
+                videoUrl={currentVideoUrl} 
+                title={currentEpisodeTitle}
+              />
 
               <div className="space-y-4">
                 <div className="flex items-start justify-between gap-4">
@@ -54,9 +100,9 @@ const Watch = () => {
                     <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
                       {anime.title}
                     </h1>
-                    {anime.currentEpisode && anime.type === 'series' && (
+                    {anime.type === 'series' && (
                       <p className="text-muted-foreground text-lg">
-                        Episode {anime.currentEpisode}
+                        {currentEpisodeTitle}
                       </p>
                     )}
                   </div>
@@ -81,9 +127,9 @@ const Watch = () => {
                   <Badge variant="secondary">
                     {anime.status === 'ongoing' ? 'Ongoing' : 'Completed'}
                   </Badge>
-                  {anime.episodes && anime.type === 'series' && (
+                  {anime.type === 'series' && totalEpisodes > 0 && (
                     <Badge variant="secondary">
-                      {anime.episodes} Episodes
+                      {totalEpisodes} Episodes in Season {selectedSeason}
                     </Badge>
                   )}
                 </div>
@@ -96,40 +142,53 @@ const Watch = () => {
                   ))}
                 </div>
 
-                <div className="bg-card rounded-lg p-6 border border-border">
+                <div className="bg-card rounded-lg p-6 border border-border shadow-sm">
                   <h2 className="text-xl font-semibold mb-3 text-foreground">Synopsis</h2>
                   <p className="text-muted-foreground leading-relaxed">
                     {anime.description}
                   </p>
                 </div>
 
-                {anime.type === 'series' && anime.currentEpisode && (
-                  <div className="bg-card rounded-lg p-6 border border-border">
-                    <h2 className="text-xl font-semibold mb-4 text-foreground">Episodes</h2>
+                {anime.type === 'series' && anime.seasons && anime.seasons.length > 0 && (
+                  <div className="bg-card rounded-lg p-6 border border-border shadow-sm">
+                    <div className="flex items-center justify-between mb-4">
+                      <h2 className="text-xl font-semibold text-foreground">Episodes</h2>
+                      {anime.seasons.length > 1 && (
+                        <Select value={selectedSeason.toString()} onValueChange={handleSeasonChange}>
+                          <SelectTrigger className="w-48">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {anime.seasons.map((season) => (
+                              <SelectItem key={season.seasonNumber} value={season.seasonNumber.toString()}>
+                                {season.title}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    </div>
+                    
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                      {Array.from({ length: Math.min(anime.currentEpisode, 20) }, (_, i) => i + 1).map((ep) => (
+                      {currentSeason?.episodes.map((ep) => (
                         <Button
-                          key={ep}
-                          variant={ep === anime.currentEpisode ? "default" : "secondary"}
-                          className="w-full"
+                          key={ep.episodeNumber}
+                          variant={ep.episodeNumber === selectedEpisode ? "default" : "secondary"}
+                          className="w-full flex flex-col items-start h-auto py-3"
+                          onClick={() => handleEpisodeClick(ep.episodeNumber)}
                         >
-                          <Play className="h-3 w-3 mr-2" />
-                          Ep {ep}
+                          <span className="font-semibold text-sm">Ep {ep.episodeNumber}</span>
+                          <span className="text-xs line-clamp-1 text-left w-full">{ep.title}</span>
                         </Button>
                       ))}
                     </div>
-                    {anime.currentEpisode > 20 && (
-                      <Button variant="outline" className="w-full mt-3">
-                        View All Episodes
-                      </Button>
-                    )}
                   </div>
                 )}
               </div>
             </div>
 
             <div className="space-y-6">
-              <div className="bg-card rounded-lg p-6 border border-border">
+              <div className="bg-card rounded-lg p-6 border border-border shadow-sm">
                 <h3 className="text-xl font-semibold mb-4 text-foreground">Related Anime</h3>
                 <div className="space-y-4">
                   {relatedAnime.map((item) => (
