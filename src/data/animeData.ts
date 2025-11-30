@@ -30,49 +30,49 @@ export interface AnimeItem {
 
 export const animeData: AnimeItem[] = [
   {
-    id: 'one-piece',
-    title: 'One Piece',
+    id: 'tokyo-revengers',
+    title: 'Tokyo Revengers',
     type: 'series',
-    description: 'Gold Roger was known as the "Pirate King," the strongest and most infamous being to have sailed the Grand Line. The capture and execution of Roger by the World Government brought a change throughout the world. His last words before his death revealed the existence of the greatest treasure in the world, One Piece.',
+    description: 'Takemichi Hanagaki is a freelancer that\'s reached the absolute pits of despair in his life. He finds out that the only girlfriend he ever had in his life that he dated in middle school, Hinata Tachibana, had been killed by the ruthless Tokyo Manji Gang. The day after hearing about her death, he\'s standing on the station platform and ends up being pushed over onto the tracks by a herd of people.',
     image: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&q=80',
-    genres: ['Action', 'Adventure', 'Comedy', 'Drama', 'Fantasy', 'Shounen', 'Super Power'],
-    year: 1999,
-    rating: 8.7,
+    genres: ['Action', 'Drama', 'Supernatural', 'Delinquents', 'Time Travel'],
+    year: 2021,
+    rating: 8.5,
     status: 'ongoing',
     isSpotlight: true,
     spotlightRank: 1,
     seasons: [
       {
         seasonNumber: 1,
-        title: 'Season 1 - East Blue Saga',
+        title: 'Season 1',
         episodes: [
           {
             episodeNumber: 1,
-            title: 'I\'m Luffy! The Man Who Will Become Pirate King!',
+            title: 'Reborn',
             videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
             duration: '24:00',
           },
           {
             episodeNumber: 2,
-            title: 'The Great Swordsman Appears!',
+            title: 'Resist',
             videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
             duration: '24:00',
           },
           {
             episodeNumber: 3,
-            title: 'Morgan vs Luffy! Who\'s This Beautiful Young Girl?',
+            title: 'Resolve',
             videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
             duration: '24:00',
           },
           {
             episodeNumber: 4,
-            title: 'Luffy\'s Past! The Red-Haired Shanks Appears!',
+            title: 'Return',
             videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
             duration: '24:00',
           },
           {
             episodeNumber: 5,
-            title: 'Fear, Mysterious Power!',
+            title: 'Releap',
             videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
             duration: '24:00',
           },
@@ -80,23 +80,23 @@ export const animeData: AnimeItem[] = [
       },
       {
         seasonNumber: 2,
-        title: 'Season 2 - Alabasta Saga',
+        title: 'Season 2 - Christmas Showdown',
         episodes: [
           {
             episodeNumber: 1,
-            title: 'Enter the Desert Pirates!',
+            title: 'It is what it is',
             videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
             duration: '24:00',
           },
           {
             episodeNumber: 2,
-            title: 'Adventure in the Country of Sand!',
+            title: 'Sibling Rivalry',
             videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4',
             duration: '24:00',
           },
           {
             episodeNumber: 3,
-            title: 'The Heroes Reunion!',
+            title: 'Stand Alone',
             videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
             duration: '24:00',
           },
