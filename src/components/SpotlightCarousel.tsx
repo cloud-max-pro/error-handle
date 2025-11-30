@@ -39,8 +39,8 @@ export const SpotlightCarousel = ({ spotlightItems }: SpotlightCarouselProps) =>
           alt={current.title}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
       </div>
 
       <div className="relative h-full flex items-center">
@@ -87,14 +87,14 @@ export const SpotlightCarousel = ({ spotlightItems }: SpotlightCarouselProps) =>
 
       <button
         onClick={goToPrevious}
-        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors flex items-center justify-center shadow-lg"
+        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-secondary/80 backdrop-blur-sm hover:bg-secondary transition-colors flex items-center justify-center shadow-lg"
       >
         <ChevronLeft className="h-6 w-6 text-foreground" />
       </button>
 
       <button
         onClick={goToNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors flex items-center justify-center shadow-lg"
+        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-secondary/80 backdrop-blur-sm hover:bg-secondary transition-colors flex items-center justify-center shadow-lg"
       >
         <ChevronRight className="h-6 w-6 text-foreground" />
       </button>
