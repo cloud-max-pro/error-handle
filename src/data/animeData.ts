@@ -19,6 +19,7 @@ export interface AnimeItem {
   description: string;
   image: string;
   videoUrl?: string; // For movies
+  trailerUrl?: string; // Trailer URL for both movies and series
   seasons?: Season[]; // For series
   genres: string[];
   year: number;
