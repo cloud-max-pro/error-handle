@@ -112,7 +112,7 @@ const Watch = () => {
                   </Badge>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 items-center">
                   <Badge variant="secondary" className="flex items-center gap-1">
                     {anime.type === 'series' ? (
                       <><Tv className="h-3 w-3" /> TV Series</>
@@ -131,6 +131,17 @@ const Watch = () => {
                     <Badge variant="secondary">
                       {totalEpisodes} Episodes in Season {selectedSeason}
                     </Badge>
+                  )}
+                  {anime.trailerUrl && (
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="gap-2"
+                      onClick={() => window.open(anime.trailerUrl, '_blank')}
+                    >
+                      <Play className="h-4 w-4" />
+                      Watch Trailer
+                    </Button>
                   )}
                 </div>
 
