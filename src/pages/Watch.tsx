@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, Link, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Play, Star, Calendar, Tv, Film } from "lucide-react";
+import { ArrowLeft, Play, Star, Calendar, Tv, Film, Video } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { AnimeCard } from "@/components/AnimeCard";
@@ -20,6 +20,7 @@ const Watch = () => {
   const [selectedEpisode, setSelectedEpisode] = useState(
     searchParams.get('episode') ? parseInt(searchParams.get('episode')!) : 1
   );
+  const [isWatchingTrailer, setIsWatchingTrailer] = useState(false);
 
   if (!anime) {
     return (
@@ -41,7 +42,10 @@ const Watch = () => {
   let currentVideoUrl = '';
   let currentEpisodeTitle = '';
   
-  if (anime.type === 'movie') {
+  if (isWatchingTrailer && anime.trailerUrl) {
+    currentVideoUrl = anime.trailerUrl;
+    currentEpisodeTitle = `${anime.title} - Trailer`;
+  } else if (anime.type === 'movie') {
     currentVideoUrl = anime.videoUrl || '';
     currentEpisodeTitle = anime.title;
   } else if (anime.seasons) {
@@ -89,10 +93,34 @@ const Watch = () => {
 
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
-              <VideoPlayer 
-                videoUrl={currentVideoUrl} 
-                title={currentEpisodeTitle}
-              />
+              <div className="space-y-3">
+                {anime.trailerUrl && (
+                  <div className="flex gap-2">
+                    <Button
+                      variant={isWatchingTrailer ? "secondary" : "default"}
+                      size="sm"
+                      onClick={() => setIsWatchingTrailer(false)}
+                      className="gap-2"
+                    >
+                      <Video className="h-4 w-4" />
+                      {anime.type === 'movie' ? 'Watch Movie' : 'Watch Series'}
+                    </Button>
+                    <Button
+                      variant={isWatchingTrailer ? "default" : "secondary"}
+                      size="sm"
+                      onClick={() => setIsWatchingTrailer(true)}
+                      className="gap-2"
+                    >
+                      <Play className="h-4 w-4" />
+                      Watch Trailer
+                    </Button>
+                  </div>
+                )}
+                <VideoPlayer 
+                  videoUrl={currentVideoUrl} 
+                  title={currentEpisodeTitle}
+                />
+              </div>
 
               <div className="space-y-4">
                 <div className="flex items-start justify-between gap-4">
@@ -112,7 +140,7 @@ const Watch = () => {
                   </Badge>
                 </div>
 
-                <div className="flex flex-wrap gap-2 items-center">
+                <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary" className="flex items-center gap-1">
                     {anime.type === 'series' ? (
                       <><Tv className="h-3 w-3" /> TV Series</>
@@ -131,17 +159,6 @@ const Watch = () => {
                     <Badge variant="secondary">
                       {totalEpisodes} Episodes in Season {selectedSeason}
                     </Badge>
-                  )}
-                  {anime.trailerUrl && (
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      className="gap-2"
-                      onClick={() => window.open(anime.trailerUrl, '_blank')}
-                    >
-                      <Play className="h-4 w-4" />
-                      Watch Trailer
-                    </Button>
                   )}
                 </div>
 
