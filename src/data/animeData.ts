@@ -36,7 +36,7 @@ export const animeData: AnimeItem[] = [
     type: 'series',
     description: 'Takemichi Hanagaki is a freelancer that\'s reached the absolute pits of despair in his life. He finds out that the only girlfriend he ever had in his life that he dated in middle school, Hinata Tachibana, had been killed by the ruthless Tokyo Manji Gang. The day after hearing about her death, he\'s standing on the station platform and ends up being pushed over onto the tracks by a herd of people.',
     image: 'https://images.justwatch.com/poster/251128847/s718/tokyo-revengers.jpg',
-    trailerUrl: 'https://youtu.be/Fwyc8XhXVSA',
+    trailerUrl: 'https://www.youtube.com/watch?v=Fwyc8XhXVSA&feature=youtu.be',
     genres: ['Action', 'Drama', 'Supernatural', 'Delinquents', 'Time Travel'],
     year: 2021,
     rating: 8.5,
