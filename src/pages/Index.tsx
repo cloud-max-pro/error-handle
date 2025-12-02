@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { SpotlightCarousel } from "@/components/SpotlightCarousel";
-import { TrailerPreview } from "@/components/TrailerPreview";
 import { AnimeCard } from "@/components/AnimeCard";
 import { FilterSidebar, FilterState } from "@/components/FilterSidebar";
 import { animeData } from "@/data/animeData";
@@ -63,8 +62,6 @@ const Index = () => {
       <main className="pt-16">
         <div className="container mx-auto px-4 py-8 space-y-12">
           <SpotlightCarousel spotlightItems={spotlightItems} />
-          
-          <TrailerPreview />
 
           <div className="flex gap-6">
             <div className="hidden lg:block w-64 flex-shrink-0">
