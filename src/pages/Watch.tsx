@@ -4,6 +4,7 @@ import { ArrowLeft, Play, Star, Calendar, Tv, Film, Video } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { AnimeCard } from "@/components/AnimeCard";
+import { Comments } from "@/components/Comments";
 import { animeData } from "@/data/animeData";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -212,6 +213,9 @@ const Watch = () => {
                     </div>
                   </div>
                 )}
+
+                {/* Comments Section */}
+                <Comments animeId={anime.id} />
               </div>
             </div>
 
