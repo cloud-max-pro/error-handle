@@ -1,9 +1,26 @@
+import { useRef, useEffect } from "react";
+
 interface VideoPlayerProps {
   videoUrl: string;
   title: string;
+  onTimeUpdate?: (currentTime: number, duration: number) => void;
 }
 
-export const VideoPlayer = ({ videoUrl, title }: VideoPlayerProps) => {
+export const VideoPlayer = ({ videoUrl, title, onTimeUpdate }: VideoPlayerProps) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !onTimeUpdate) return;
+
+    const handleTimeUpdate = () => {
+      onTimeUpdate(video.currentTime, video.duration);
+    };
+
+    video.addEventListener("timeupdate", handleTimeUpdate);
+    return () => video.removeEventListener("timeupdate", handleTimeUpdate);
+  }, [onTimeUpdate]);
+
   if (!videoUrl) {
     return (
       <div className="w-full aspect-video bg-secondary rounded-lg flex items-center justify-center">
@@ -52,6 +69,7 @@ export const VideoPlayer = ({ videoUrl, title }: VideoPlayerProps) => {
         />
       ) : (
         <video
+          ref={videoRef}
           src={embedUrl}
           className="w-full aspect-video"
           controls

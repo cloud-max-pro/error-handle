@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Play, Star, Calendar, Tv, Film, Video } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
@@ -10,11 +10,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useWatchProgress } from "@/hooks/useWatchProgress";
 
 const Watch = () => {
   const { id } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const anime = animeData.find((item) => item.id === id);
+  const { saveProgress } = useWatchProgress();
   
   const [selectedSeason, setSelectedSeason] = useState(
     searchParams.get('season') ? parseInt(searchParams.get('season')!) : 1
@@ -23,6 +25,18 @@ const Watch = () => {
     searchParams.get('episode') ? parseInt(searchParams.get('episode')!) : 1
   );
   const [isWatchingTrailer, setIsWatchingTrailer] = useState(false);
+
+  const handleTimeUpdate = useCallback((currentTime: number, duration: number) => {
+    if (id && !isWatchingTrailer && duration > 0) {
+      saveProgress({
+        animeId: id,
+        season: selectedSeason,
+        episode: selectedEpisode,
+        progress: currentTime,
+        duration: duration,
+      });
+    }
+  }, [id, selectedSeason, selectedEpisode, isWatchingTrailer, saveProgress]);
 
   if (!anime) {
     return (
@@ -125,6 +139,7 @@ const Watch = () => {
                 <VideoPlayer 
                   videoUrl={currentVideoUrl} 
                   title={currentEpisodeTitle}
+                  onTimeUpdate={handleTimeUpdate}
                 />
               </div>
 

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Menu, Home, Compass, Clock, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "@/components/SearchBar";
@@ -28,18 +28,24 @@ export const Navbar = () => {
                   Home
                 </Button>
               </Link>
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground gap-2">
-                <Compass className="h-4 w-4" />
-                Browse
-              </Button>
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground gap-2">
-                <Clock className="h-4 w-4" />
-                Recent
-              </Button>
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground gap-2">
-                <Star className="h-4 w-4" />
-                Top Rated
-              </Button>
+              <Link to="/?view=browse">
+                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground gap-2">
+                  <Compass className="h-4 w-4" />
+                  Browse
+                </Button>
+              </Link>
+              <Link to="/?view=recent">
+                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground gap-2">
+                  <Clock className="h-4 w-4" />
+                  Recent
+                </Button>
+              </Link>
+              <Link to="/?view=top-rated">
+                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground gap-2">
+                  <Star className="h-4 w-4" />
+                  Top Rated
+                </Button>
+              </Link>
             </div>
           </div>
 
