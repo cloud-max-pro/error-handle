@@ -1,7 +1,7 @@
 import { useState } from "react";
+import { Search, Filter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 
 interface FilterSidebarProps {
   onFilterChange: (filters: FilterState) => void;
@@ -50,24 +50,34 @@ export const FilterSidebar = ({ onFilterChange }: FilterSidebarProps) => {
     onFilterChange(defaultFilters);
   };
 
+  const hasActiveFilters = Object.entries(filters).some(
+    ([key, value]) => key !== 'orderBy' && value !== 'all'
+  );
+
   return (
-    <div className="bg-card rounded-lg border border-border p-6 space-y-6 sticky top-20">
+    <div className="bg-card/50 rounded-lg border border-border/50 p-4 space-y-4 sticky top-20">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-foreground">Filter Search</h2>
-        <Button variant="ghost" size="sm" onClick={clearFilters}>
-          Clear
-        </Button>
+        <div className="flex items-center gap-2">
+          <Filter className="h-4 w-4 text-primary" />
+          <h2 className="text-sm font-semibold text-foreground">Filters</h2>
+        </div>
+        {hasActiveFilters && (
+          <Button variant="ghost" size="sm" onClick={clearFilters} className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground">
+            <X className="h-3 w-3 mr-1" />
+            Clear
+          </Button>
+        )}
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         <div>
-          <label className="text-sm font-medium text-foreground mb-2 block">Genre</label>
+          <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Genre</label>
           <Select value={filters.genre} onValueChange={(value) => handleFilterChange('genre', value)}>
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full h-8 text-xs bg-secondary/50 border-border/50">
               <SelectValue placeholder="All" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="all">All Genres</SelectItem>
               {genres.map((genre) => (
                 <SelectItem key={genre} value={genre.toLowerCase()}>
                   {genre}
@@ -78,47 +88,13 @@ export const FilterSidebar = ({ onFilterChange }: FilterSidebarProps) => {
         </div>
 
         <div>
-          <label className="text-sm font-medium text-foreground mb-2 block">Season</label>
-          <Select value={filters.season} onValueChange={(value) => handleFilterChange('season', value)}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="All" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All</SelectItem>
-              {seasons.map((season) => (
-                <SelectItem key={season} value={season.toLowerCase()}>
-                  {season}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <label className="text-sm font-medium text-foreground mb-2 block">Status</label>
-          <Select value={filters.status} onValueChange={(value) => handleFilterChange('status', value)}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="All" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All</SelectItem>
-              {statuses.map((status) => (
-                <SelectItem key={status} value={status.toLowerCase()}>
-                  {status}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <label className="text-sm font-medium text-foreground mb-2 block">Type</label>
+          <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Type</label>
           <Select value={filters.type} onValueChange={(value) => handleFilterChange('type', value)}>
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full h-8 text-xs bg-secondary/50 border-border/50">
               <SelectValue placeholder="All" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="all">All Types</SelectItem>
               {types.map((type) => (
                 <SelectItem key={type} value={type.toLowerCase()}>
                   {type}
@@ -129,9 +105,43 @@ export const FilterSidebar = ({ onFilterChange }: FilterSidebarProps) => {
         </div>
 
         <div>
-          <label className="text-sm font-medium text-foreground mb-2 block">Order by</label>
+          <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Status</label>
+          <Select value={filters.status} onValueChange={(value) => handleFilterChange('status', value)}>
+            <SelectTrigger className="w-full h-8 text-xs bg-secondary/50 border-border/50">
+              <SelectValue placeholder="All" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              {statuses.map((status) => (
+                <SelectItem key={status} value={status.toLowerCase()}>
+                  {status}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div>
+          <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Season</label>
+          <Select value={filters.season} onValueChange={(value) => handleFilterChange('season', value)}>
+            <SelectTrigger className="w-full h-8 text-xs bg-secondary/50 border-border/50">
+              <SelectValue placeholder="All" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Seasons</SelectItem>
+              {seasons.map((season) => (
+                <SelectItem key={season} value={season.toLowerCase()}>
+                  {season}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div>
+          <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Sort By</label>
           <Select value={filters.orderBy} onValueChange={(value) => handleFilterChange('orderBy', value)}>
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full h-8 text-xs bg-secondary/50 border-border/50">
               <SelectValue placeholder="Default" />
             </SelectTrigger>
             <SelectContent>
@@ -142,14 +152,7 @@ export const FilterSidebar = ({ onFilterChange }: FilterSidebarProps) => {
             </SelectContent>
           </Select>
         </div>
-
-        <Button className="w-full" onClick={() => onFilterChange(filters)}>
-          <Search className="h-4 w-4 mr-2" />
-          Search
-        </Button>
       </div>
     </div>
   );
 };
-
-import { Search } from "lucide-react";

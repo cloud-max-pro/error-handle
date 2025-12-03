@@ -9,6 +9,7 @@ import { animeData } from "@/data/animeData";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 const Watch = () => {
   const { id } = useParams();
@@ -27,10 +28,10 @@ const Watch = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Anime Not Found</h1>
+          <h1 className="text-3xl font-bold mb-4 text-foreground">Anime Not Found</h1>
           <Link to="/">
-            <Button>
-              <ArrowLeft className="mr-2 h-4 w-4" />
+            <Button className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
               Back to Home
             </Button>
           </Link>
@@ -39,7 +40,6 @@ const Watch = () => {
     );
   }
 
-  // Get current video URL
   let currentVideoUrl = '';
   let currentEpisodeTitle = '';
   
@@ -69,12 +69,13 @@ const Watch = () => {
 
   const handleEpisodeClick = (episodeNum: number) => {
     setSelectedEpisode(episodeNum);
+    setIsWatchingTrailer(false);
     setSearchParams({ season: selectedSeason.toString(), episode: episodeNum.toString() });
   };
 
   const relatedAnime = animeData
     .filter((item) => item.id !== anime.id && item.genres.some((g) => anime.genres.includes(g)))
-    .slice(0, 5);
+    .slice(0, 6);
 
   const currentSeason = anime.seasons?.find(s => s.seasonNumber === selectedSeason);
   const totalEpisodes = currentSeason?.episodes.length || 0;
@@ -83,167 +84,175 @@ const Watch = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       
-      <main className="pt-16">
-        <div className="container mx-auto px-4 py-8 space-y-8">
-          <Button asChild variant="ghost" className="gap-2">
+      <main className="pt-14">
+        <div className="container mx-auto px-4 py-6 space-y-6">
+          {/* Back Button */}
+          <Button asChild variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground h-8">
             <Link to="/">
               <ArrowLeft className="h-4 w-4" />
-              Back to Home
+              Back
             </Link>
           </Button>
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="space-y-3">
-                {anime.trailerUrl && (
-                  <div className="flex gap-2">
-                    <Button
-                      variant={isWatchingTrailer ? "secondary" : "default"}
-                      size="sm"
-                      onClick={() => setIsWatchingTrailer(false)}
-                      className="gap-2"
-                    >
-                      <Video className="h-4 w-4" />
-                      {anime.type === 'movie' ? 'Watch Movie' : 'Watch Series'}
-                    </Button>
-                    <Button
-                      variant={isWatchingTrailer ? "default" : "secondary"}
-                      size="sm"
-                      onClick={() => setIsWatchingTrailer(true)}
-                      className="gap-2"
-                    >
-                      <Play className="h-4 w-4" />
-                      Watch Trailer
-                    </Button>
-                  </div>
-                )}
+          <div className="grid lg:grid-cols-[1fr_320px] gap-6">
+            <div className="space-y-4">
+              {/* Video Toggle */}
+              {anime.trailerUrl && (
+                <div className="flex gap-2">
+                  <Button
+                    variant={isWatchingTrailer ? "secondary" : "default"}
+                    size="sm"
+                    onClick={() => setIsWatchingTrailer(false)}
+                    className="gap-2 h-8 text-xs"
+                  >
+                    <Video className="h-3.5 w-3.5" />
+                    {anime.type === 'movie' ? 'Movie' : 'Episode'}
+                  </Button>
+                  <Button
+                    variant={isWatchingTrailer ? "default" : "secondary"}
+                    size="sm"
+                    onClick={() => setIsWatchingTrailer(true)}
+                    className="gap-2 h-8 text-xs"
+                  >
+                    <Play className="h-3.5 w-3.5" />
+                    Trailer
+                  </Button>
+                </div>
+              )}
+
+              {/* Video Player */}
+              <div className="rounded-lg overflow-hidden bg-card border border-border/50">
                 <VideoPlayer 
                   videoUrl={currentVideoUrl} 
                   title={currentEpisodeTitle}
                 />
               </div>
 
-              <div className="space-y-4">
+              {/* Title & Info */}
+              <div className="space-y-3">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
+                    <h1 className="text-2xl md:text-3xl font-bold text-foreground">
                       {anime.title}
                     </h1>
-                    {anime.type === 'series' && (
-                      <p className="text-muted-foreground text-lg">
+                    {anime.type === 'series' && !isWatchingTrailer && (
+                      <p className="text-sm text-primary mt-1">
                         {currentEpisodeTitle}
                       </p>
                     )}
                   </div>
-                  <Badge className="bg-primary text-primary-foreground flex items-center gap-1">
-                    <Star className="h-4 w-4 fill-current" />
+                  <Badge className="bg-primary/10 text-primary border border-primary/20 flex items-center gap-1 shrink-0">
+                    <Star className="h-3.5 w-3.5 fill-current" />
                     {anime.rating}
                   </Badge>
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary" className="flex items-center gap-1">
-                    {anime.type === 'series' ? (
-                      <><Tv className="h-3 w-3" /> TV Series</>
-                    ) : (
-                      <><Film className="h-3 w-3" /> Movie</>
-                    )}
+                  <Badge variant="secondary" className="text-xs flex items-center gap-1">
+                    {anime.type === 'series' ? <Tv className="h-3 w-3" /> : <Film className="h-3 w-3" />}
+                    {anime.type === 'series' ? 'TV Series' : 'Movie'}
                   </Badge>
-                  <Badge variant="secondary" className="flex items-center gap-1">
+                  <Badge variant="secondary" className="text-xs flex items-center gap-1">
                     <Calendar className="h-3 w-3" />
                     {anime.year}
                   </Badge>
-                  <Badge variant="secondary">
+                  <Badge variant="secondary" className="text-xs">
                     {anime.status === 'ongoing' ? 'Ongoing' : 'Completed'}
                   </Badge>
-                  {anime.type === 'series' && totalEpisodes > 0 && (
-                    <Badge variant="secondary">
-                      {totalEpisodes} Episodes in Season {selectedSeason}
-                    </Badge>
-                  )}
                 </div>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {anime.genres.map((genre) => (
-                    <Badge key={genre} variant="outline">
+                    <Badge key={genre} variant="outline" className="text-xs bg-secondary/30">
                       {genre}
                     </Badge>
                   ))}
                 </div>
+              </div>
 
-                <div className="bg-card rounded-lg p-6 border border-border shadow-sm">
-                  <h2 className="text-xl font-semibold mb-3 text-foreground">Synopsis</h2>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {anime.description}
-                  </p>
-                </div>
+              {/* Synopsis */}
+              <div className="bg-card/50 rounded-lg p-4 border border-border/50">
+                <h2 className="text-sm font-semibold mb-2 text-foreground">Synopsis</h2>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {anime.description}
+                </p>
+              </div>
 
-                {anime.type === 'series' && anime.seasons && anime.seasons.length > 0 && (
-                  <div className="bg-card rounded-lg p-6 border border-border shadow-sm">
-                    <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-xl font-semibold text-foreground">Episodes</h2>
-                      {anime.seasons.length > 1 && (
-                        <Select value={selectedSeason.toString()} onValueChange={handleSeasonChange}>
-                          <SelectTrigger className="w-48">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {anime.seasons.map((season) => (
-                              <SelectItem key={season.seasonNumber} value={season.seasonNumber.toString()}>
-                                {season.title}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      )}
-                    </div>
-                    
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              {/* Episodes */}
+              {anime.type === 'series' && anime.seasons && anime.seasons.length > 0 && (
+                <div className="bg-card/50 rounded-lg p-4 border border-border/50">
+                  <div className="flex items-center justify-between mb-3">
+                    <h2 className="text-sm font-semibold text-foreground">
+                      Episodes ({totalEpisodes})
+                    </h2>
+                    {anime.seasons.length > 1 && (
+                      <Select value={selectedSeason.toString()} onValueChange={handleSeasonChange}>
+                        <SelectTrigger className="w-36 h-8 text-xs bg-secondary/50 border-border/50">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {anime.seasons.map((season) => (
+                            <SelectItem key={season.seasonNumber} value={season.seasonNumber.toString()}>
+                              {season.title}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  </div>
+                  
+                  <ScrollArea className="w-full">
+                    <div className="flex gap-2 pb-2">
                       {currentSeason?.episodes.map((ep) => (
                         <Button
                           key={ep.episodeNumber}
-                          variant={ep.episodeNumber === selectedEpisode ? "default" : "secondary"}
-                          className="w-full flex flex-col items-start h-auto py-3"
+                          variant={ep.episodeNumber === selectedEpisode && !isWatchingTrailer ? "default" : "secondary"}
+                          className={`shrink-0 h-9 px-4 text-xs ${
+                            ep.episodeNumber === selectedEpisode && !isWatchingTrailer
+                              ? 'bg-primary text-primary-foreground'
+                              : 'bg-secondary/50 hover:bg-secondary'
+                          }`}
                           onClick={() => handleEpisodeClick(ep.episodeNumber)}
                         >
-                          <span className="font-semibold text-sm">Ep {ep.episodeNumber}</span>
-                          <span className="text-xs line-clamp-1 text-left w-full">{ep.title}</span>
+                          Ep {ep.episodeNumber}
                         </Button>
                       ))}
                     </div>
-                  </div>
-                )}
+                    <ScrollBar orientation="horizontal" />
+                  </ScrollArea>
+                </div>
+              )}
 
-                {/* Comments Section */}
-                <Comments animeId={anime.id} />
-              </div>
+              {/* Comments */}
+              <Comments animeId={anime.id} />
             </div>
 
-            <div className="space-y-6">
-              <div className="bg-card rounded-lg p-6 border border-border shadow-sm">
-                <h3 className="text-xl font-semibold mb-4 text-foreground">Related Anime</h3>
-                <div className="space-y-4">
+            {/* Sidebar - Related Anime */}
+            <div className="space-y-4">
+              <div className="bg-card/50 rounded-lg p-4 border border-border/50">
+                <h3 className="text-sm font-semibold mb-3 text-foreground">Related</h3>
+                <div className="space-y-3">
                   {relatedAnime.map((item) => (
                     <Link
                       key={item.id}
                       to={`/watch/${item.id}`}
-                      className="flex gap-3 group hover:bg-secondary/50 p-2 rounded-lg transition-colors"
+                      className="flex gap-3 group hover:bg-secondary/30 p-2 -mx-2 rounded-md transition-colors"
                     >
                       <img
                         src={item.image}
                         alt={item.title}
-                        className="w-20 h-28 object-cover rounded"
+                        className="w-16 h-22 object-cover rounded"
                       />
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-sm line-clamp-2 group-hover:text-primary transition-colors">
+                        <h4 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
                           {item.title}
                         </h4>
                         <div className="flex items-center gap-2 mt-1">
-                          <Badge variant="secondary" className="text-xs">
+                          <span className="text-[11px] text-muted-foreground">
                             {item.type === 'series' ? 'TV' : 'Movie'}
-                          </Badge>
-                          <span className="text-xs text-muted-foreground flex items-center gap-1">
-                            <Star className="h-3 w-3 fill-current text-primary" />
+                          </span>
+                          <span className="text-[11px] text-primary flex items-center gap-0.5">
+                            <Star className="h-3 w-3 fill-current" />
                             {item.rating}
                           </span>
                         </div>
@@ -257,9 +266,9 @@ const Watch = () => {
         </div>
       </main>
 
-      <footer className="bg-secondary border-t border-border mt-20 py-8">
-        <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>&copy; 2025 Gear5TV. All rights reserved.</p>
+      <footer className="bg-card/50 border-t border-border/50 mt-12 py-6">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-sm text-muted-foreground">&copy; 2025 Gear5TV. All rights reserved.</p>
         </div>
       </footer>
     </div>
