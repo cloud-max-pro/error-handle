@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { SpotlightCarousel } from "@/components/SpotlightCarousel";
 import { AnimeCard } from "@/components/AnimeCard";
@@ -7,7 +7,7 @@ import { FilterSidebar, FilterState } from "@/components/FilterSidebar";
 import { ContinueWatching } from "@/components/ContinueWatching";
 import { animeData } from "@/data/animeData";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, Sparkles, Compass, Star, Tv } from "lucide-react";
+import { TrendingUp, Sparkles, Compass, Star, Tv, ArrowLeft } from "lucide-react";
 import { useWatchProgress } from "@/hooks/useWatchProgress";
 
 const networks = [
@@ -27,7 +27,9 @@ const networks = [
 
 const Index = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const view = searchParams.get("view");
+  const networkId = searchParams.get("network");
   const { watchHistory, removeProgress } = useWatchProgress();
   
   const [filters, setFilters] = useState<FilterState>({
@@ -89,6 +91,8 @@ const Index = () => {
   }, [view]);
 
   const isNetworksView = view === "networks";
+  const selectedNetwork = networkId ? networks.find(n => n.id === networkId) : null;
+  const networkAnime = networkId ? animeData.filter(anime => anime.network === networkId) : [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -112,34 +116,77 @@ const Index = () => {
                 />
               )}
 
-              {/* Networks View */}
-              {isNetworksView ? (
+              {/* Network Anime View */}
+              {selectedNetwork ? (
+                <section>
+                  <div className="flex items-center gap-3 mb-6">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => navigate("/?view=networks")}
+                      className="h-8 px-2"
+                    >
+                      <ArrowLeft className="h-4 w-4" />
+                    </Button>
+                    <div className="h-8 w-auto">
+                      <img
+                        src={selectedNetwork.logo}
+                        alt={selectedNetwork.name}
+                        className="h-full object-contain filter brightness-0 invert"
+                      />
+                    </div>
+                    <h2 className="text-xl font-bold text-foreground">{selectedNetwork.name} Anime</h2>
+                    <span className="text-xs text-muted-foreground">({networkAnime.length})</span>
+                  </div>
+                  {networkAnime.length > 0 ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3">
+                      {networkAnime.map((anime) => (
+                        <AnimeCard key={anime.id} anime={anime} />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12 text-muted-foreground">
+                      <Tv className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p>No anime available from {selectedNetwork.name} yet.</p>
+                    </div>
+                  )}
+                </section>
+              ) : isNetworksView ? (
                 <section>
                   <div className="flex items-center gap-2 mb-6">
                     <Tv className="h-5 w-5 text-primary" />
                     <h2 className="text-xl font-bold text-foreground">Streaming Networks</h2>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-4">
-                    {networks.map((network) => (
-                      <div
-                        key={network.id}
-                        className="group relative bg-card hover:bg-card/80 border border-border/50 rounded-lg p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all hover:scale-105 hover:border-primary/50"
-                        style={{ boxShadow: `0 0 0 0 ${network.color}`, transition: 'box-shadow 0.3s' }}
-                        onMouseEnter={(e) => e.currentTarget.style.boxShadow = `0 4px 20px ${network.color}40`}
-                        onMouseLeave={(e) => e.currentTarget.style.boxShadow = `0 0 0 0 ${network.color}`}
-                      >
-                        <div className="h-12 w-full flex items-center justify-center">
-                          <img
-                            src={network.logo}
-                            alt={network.name}
-                            className="max-h-full max-w-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity"
-                          />
+                    {networks.map((network) => {
+                      const count = animeData.filter(a => a.network === network.id).length;
+                      return (
+                        <div
+                          key={network.id}
+                          onClick={() => navigate(`/?network=${network.id}`)}
+                          className="group relative bg-card hover:bg-card/80 border border-border/50 rounded-lg p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all hover:scale-105 hover:border-primary/50"
+                          style={{ boxShadow: `0 0 0 0 ${network.color}`, transition: 'box-shadow 0.3s' }}
+                          onMouseEnter={(e) => e.currentTarget.style.boxShadow = `0 4px 20px ${network.color}40`}
+                          onMouseLeave={(e) => e.currentTarget.style.boxShadow = `0 0 0 0 ${network.color}`}
+                        >
+                          <div className="h-12 w-full flex items-center justify-center">
+                            <img
+                              src={network.logo}
+                              alt={network.name}
+                              className="max-h-full max-w-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity"
+                            />
+                          </div>
+                          <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                            {network.name}
+                          </span>
+                          {count > 0 && (
+                            <span className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
+                              {count}
+                            </span>
+                          )}
                         </div>
-                        <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
-                          {network.name}
-                        </span>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </section>
               ) : viewData ? (

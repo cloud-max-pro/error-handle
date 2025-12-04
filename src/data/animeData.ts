@@ -27,6 +27,7 @@ export interface AnimeItem {
   status: 'ongoing' | 'completed';
   isSpotlight?: boolean;
   spotlightRank?: number;
+  network?: 'crunchyroll' | 'netflix' | 'disney-plus' | 'hulu' | 'amazon-prime' | 'funimation' | 'hidive' | 'hbo-max' | 'apple-tv' | 'paramount-plus' | 'peacock' | 'adult-swim';
 }
 
 export const animeData: AnimeItem[] = [
@@ -43,6 +44,7 @@ export const animeData: AnimeItem[] = [
     status: 'ongoing',
     isSpotlight: true,
     spotlightRank: 1,
+    network: 'crunchyroll',
     seasons: [
       {
         seasonNumber: 1,
@@ -210,6 +212,7 @@ export const animeData: AnimeItem[] = [
     status: 'completed',
     isSpotlight: true,
     spotlightRank: 4,
+    network: 'netflix',
   },
   {
     id: 'Doraemon the Movie: Nobita\'s Earth Symphony',
@@ -225,6 +228,7 @@ export const animeData: AnimeItem[] = [
     status: 'completed',
     isSpotlight: true,
     spotlightRank: 3,
+    network: 'disney-plus',
   },
   {
     id: 'Chainsaw-Man-the-Movie-Reze-Arc',
@@ -240,6 +244,7 @@ export const animeData: AnimeItem[] = [
     status: 'completed',
     isSpotlight: true,
     spotlightRank: 5,
+    network: 'crunchyroll',
   },
   {
     id: 'Mononoke the Movie: Chapter II - The Ashes of Rage',
@@ -255,6 +260,7 @@ export const animeData: AnimeItem[] = [
     status: 'completed',
     isSpotlight: true,
     spotlightRank: 6,
+    network: 'amazon-prime',
   },
   {
     id: 'kaiju-no-8-season-2',
@@ -269,6 +275,7 @@ export const animeData: AnimeItem[] = [
     status: 'ongoing',
     isSpotlight: true,
     spotlightRank: 2,
+    network: 'crunchyroll',
     seasons: [
       {
         seasonNumber: 1,
@@ -325,6 +332,7 @@ export const animeData: AnimeItem[] = [
     year: 2025,
     rating: 8.8,
     status: 'ongoing',
+    network: 'crunchyroll',
     seasons: [
       {
         seasonNumber: 1,
@@ -357,6 +365,7 @@ export const animeData: AnimeItem[] = [
     year: 2019,
     rating: 9.1,
     status: 'completed',
+    network: 'netflix',
     seasons: [
       {
         seasonNumber: 1,
@@ -389,6 +398,7 @@ export const animeData: AnimeItem[] = [
     year: 2007,
     rating: 8.7,
     status: 'completed',
+    network: 'crunchyroll',
     seasons: [
       {
         seasonNumber: 1,
@@ -421,6 +431,7 @@ export const animeData: AnimeItem[] = [
     year: 2025,
     rating: 8.9,
     status: 'ongoing',
+    network: 'hulu',
     seasons: [
       {
         seasonNumber: 3,
@@ -453,6 +464,7 @@ export const animeData: AnimeItem[] = [
     year: 2025,
     rating: 8.6,
     status: 'ongoing',
+    network: 'netflix',
     seasons: [
       {
         seasonNumber: 2,
@@ -479,6 +491,7 @@ export const animeData: AnimeItem[] = [
     year: 2025,
     rating: 8.4,
     status: 'completed',
+    network: 'funimation',
     seasons: [
       {
         seasonNumber: 1,
@@ -505,6 +518,7 @@ export const animeData: AnimeItem[] = [
     year: 2025,
     rating: 8.7,
     status: 'ongoing',
+    network: 'crunchyroll',
     seasons: [
       {
         seasonNumber: 2,
