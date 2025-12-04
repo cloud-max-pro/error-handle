@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Menu, Home, Compass, Clock, Star, X } from "lucide-react";
+import { Menu, Home, Compass, Star, X, Tv } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "@/components/SearchBar";
 import logo from "@/assets/logo.png";
@@ -11,7 +11,7 @@ export const Navbar = () => {
   const navLinks = [
     { to: "/", label: "Home", icon: Home },
     { to: "/?view=browse", label: "Browse", icon: Compass },
-    { to: "/?view=recent", label: "Recent", icon: Clock },
+    { to: "/?view=networks", label: "Networks", icon: Tv },
     { to: "/?view=top-rated", label: "Top Rated", icon: Star },
   ];
 
