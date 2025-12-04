@@ -14,15 +14,15 @@ const networks = [
   { id: "crunchyroll", name: "Crunchyroll", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Crunchyroll_Logo.png/800px-Crunchyroll_Logo.png", color: "#F47521" },
   { id: "netflix", name: "Netflix", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1920px-Netflix_2015_logo.svg.png", color: "#E50914" },
   { id: "disney-plus", name: "Disney+", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/1920px-Disney%2B_logo.svg.png", color: "#113CCF" },
-  { id: "hulu", name: "Hulu", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Hulu_Logo.svg/1920px-Hulu_Logo.svg.png", color: "#1CE783" },
+  { id: "hulu", name: "Hulu", logo: "https://www.seekpng.com/png/full/242-2425006_hulu-logo-gray-hulu-white-logo-png.png", color: "#1CE783" },
   { id: "amazon-prime", name: "Prime Video", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Amazon_Prime_Video_logo.svg/1920px-Amazon_Prime_Video_logo.svg.png", color: "#00A8E1" },
   { id: "funimation", name: "Funimation", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Funimation_2016.svg/1920px-Funimation_2016.svg.png", color: "#5B0BB5" },
-  { id: "hidive", name: "HIDIVE", logo: "https://www.hidive.com/images/en/hidive-logo.svg", color: "#00BAFF" },
+  { id: "hidive", name: "HIDIVE", logo: "https://static.hidive.com/misc/HIDIVE-Logo-White.png", color: "#00BAFF" },
   { id: "hbo-max", name: "Max", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/HBO_Max_Logo.svg/1920px-HBO_Max_Logo.svg.png", color: "#741DFF" },
   { id: "apple-tv", name: "Apple TV+", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Apple_TV_Plus_Logo.svg/1920px-Apple_TV_Plus_Logo.svg.png", color: "#000000" },
   { id: "paramount-plus", name: "Paramount+", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Paramount_Plus.svg/1920px-Paramount_Plus.svg.png", color: "#0064FF" },
   { id: "peacock", name: "Peacock", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/NBCUniversal_Peacock_Logo.svg/1920px-NBCUniversal_Peacock_Logo.svg.png", color: "#000000" },
-  { id: "adult-swim", name: "Adult Swim", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Adult_Swim_2003_logo.svg/1920px-Adult_Swim_2003_logo.svg.png", color: "#000000" },
+  { id: "adult-swim", name: "Adult Swim", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Adult_Swim_2003_logo.svg/1280px-Adult_Swim_2003_logo.svg.png", color: "#000000" },
 ];
 
 const Index = () => {
