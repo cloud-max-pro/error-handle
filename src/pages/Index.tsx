@@ -11,18 +11,18 @@ import { TrendingUp, Sparkles, Compass, Star, Tv, ArrowLeft } from "lucide-react
 import { useWatchProgress } from "@/hooks/useWatchProgress";
 
 const networks = [
-  { id: "crunchyroll", name: "Crunchyroll", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Crunchyroll_Logo.png/800px-Crunchyroll_Logo.png", color: "#F47521" },
-  { id: "netflix", name: "Netflix", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1920px-Netflix_2015_logo.svg.png", color: "#E50914" },
-  { id: "disney-plus", name: "Disney+", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/1920px-Disney%2B_logo.svg.png", color: "#113CCF" },
-  { id: "hulu", name: "Hulu", logo: "https://www.seekpng.com/png/full/242-2425006_hulu-logo-gray-hulu-white-logo-png.png", color: "#1CE783" },
-  { id: "amazon-prime", name: "Prime Video", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Amazon_Prime_Video_logo.svg/1920px-Amazon_Prime_Video_logo.svg.png", color: "#00A8E1" },
-  { id: "funimation", name: "Funimation", logo: "https://images.squarespace-cdn.com/content/v1/54fc8146e4b02a22841f4df7/1612884726498-4DGYZ9GKPZB2SVHB7T8E/funimation-560x315.png", color: "#5B0BB5" },
-  { id: "hidive", name: "HIDIVE", logo: "https://static.hidive.com/misc/HIDIVE-Logo-White.png", color: "#00BAFF" },
-  { id: "hbo-max", name: "Max", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/HBO_Max_Logo.svg/1920px-HBO_Max_Logo.svg.png", color: "#741DFF" },
-  { id: "apple-tv", name: "Apple TV+", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Apple_TV_Plus_Logo.svg/1920px-Apple_TV_Plus_Logo.svg.png", color: "#000000" },
-  { id: "paramount-plus", name: "Paramount+", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Paramount_Plus.svg/1920px-Paramount_Plus.svg.png", color: "#0064FF" },
-  { id: "peacock", name: "Peacock", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/NBCUniversal_Peacock_Logo.svg/1920px-NBCUniversal_Peacock_Logo.svg.png", color: "#000000" },
-  { id: "adult-swim", name: "Adult Swim", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Adult_Swim_2003_logo.svg/1280px-Adult_Swim_2003_logo.svg.png", color: "#000000" },
+  { id: "crunchyroll", name: "Crunchyroll", color: "#F47521" },
+  { id: "netflix", name: "Netflix", color: "#E50914" },
+  { id: "disney-plus", name: "Disney+", color: "#113CCF" },
+  { id: "hulu", name: "Hulu", color: "#1CE783" },
+  { id: "amazon-prime", name: "Prime Video", color: "#00A8E1" },
+  { id: "funimation", name: "Funimation", color: "#5B0BB5" },
+  { id: "hidive", name: "HIDIVE", color: "#00BAFF" },
+  { id: "hbo-max", name: "Max", color: "#741DFF" },
+  { id: "apple-tv", name: "Apple TV+", color: "#FFFFFF" },
+  { id: "paramount-plus", name: "Paramount+", color: "#0064FF" },
+  { id: "peacock", name: "Peacock", color: "#9966FF" },
+  { id: "adult-swim", name: "Adult Swim", color: "#000000" },
 ];
 
 const Index = () => {
@@ -128,14 +128,13 @@ const Index = () => {
                     >
                       <ArrowLeft className="h-4 w-4" />
                     </Button>
-                    <div className="h-8 w-auto">
-                      <img
-                        src={selectedNetwork.logo}
-                        alt={selectedNetwork.name}
-                        className="h-full object-contain filter brightness-0 invert"
-                      />
+                    <div 
+                      className="h-8 px-3 rounded flex items-center justify-center font-bold text-white text-sm"
+                      style={{ backgroundColor: selectedNetwork.color === "#FFFFFF" ? "#333" : selectedNetwork.color }}
+                    >
+                      {selectedNetwork.name}
                     </div>
-                    <h2 className="text-xl font-bold text-foreground">{selectedNetwork.name} Anime</h2>
+                    <h2 className="text-xl font-bold text-foreground">Anime</h2>
                     <span className="text-xs text-muted-foreground">({networkAnime.length})</span>
                   </div>
                   {networkAnime.length > 0 ? (
@@ -169,12 +168,11 @@ const Index = () => {
                           onMouseEnter={(e) => e.currentTarget.style.boxShadow = `0 4px 20px ${network.color}40`}
                           onMouseLeave={(e) => e.currentTarget.style.boxShadow = `0 0 0 0 ${network.color}`}
                         >
-                          <div className="h-12 w-full flex items-center justify-center">
-                            <img
-                              src={network.logo}
-                              alt={network.name}
-                              className="max-h-full max-w-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity"
-                            />
+                          <div 
+                            className="h-12 w-full flex items-center justify-center rounded-lg font-bold text-white text-lg"
+                            style={{ backgroundColor: network.color === "#FFFFFF" ? "#333" : network.color }}
+                          >
+                            {network.name.charAt(0)}
                           </div>
                           <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
                             {network.name}
