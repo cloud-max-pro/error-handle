@@ -50,7 +50,13 @@ export const CreateChannelModal = ({ open, onOpenChange, onSuccess }: CreateChan
       toast({ title: "Error", description: "Failed to create channel", variant: "destructive" });
     } else {
       toast({ title: "Success", description: "Channel created!" });
+      // Store channel in array for multiple channel support
+      const existingChannels = JSON.parse(localStorage.getItem("pubstream_channels") || "[]");
+      existingChannels.push({ id: data.id, name: data.name });
+      localStorage.setItem("pubstream_channels", JSON.stringify(existingChannels));
+      // Keep legacy keys for backwards compatibility
       localStorage.setItem("pubstream_channel_id", data.id);
+      localStorage.setItem("pubstream_channel_name", data.name);
       setName("");
       setDescription("");
       setAvatarUrl("");
