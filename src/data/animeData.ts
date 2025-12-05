@@ -555,7 +555,7 @@ export const animeData: AnimeItem[] = [
     title: 'Lord of Mysteries',
     type: 'series',
     description: 'In a world where steam power reigns supreme and mysticism lurks in shadows, Klein Moretti awakens with memories of Earth. Drawn into a web of ancient gods, secret organizations, and forbidden knowledge, he must navigate the treacherous path of Beyonder sequences while uncovering the truth behind his transmigration.',
-    image: 'https://m.media-amazon.com/images/M/MV5BYjhlMDIwYmQtMDBhYS00MDE1LTlmY2MtNjY4NjExNDc1MDFkXkEyXkFqcGc@._V1_.jpg',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf-HwObtw3VXbZBgwILPwFtTJfGw59xBGb-w&s',
     trailerUrl: 'https://www.youtube.com/watch?v=a8p-l75icsA',
     genres: ['Mystery', 'Fantasy', 'Supernatural', 'Action', 'Drama'],
     year: 2024,
