@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Upload, Link as LinkIcon, FileVideo } from "lucide-react";
+import { Upload, Link as LinkIcon, FileVideo, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,17 +10,30 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+
+interface Channel {
+  id: string;
+  name: string;
+}
 
 interface UploadVideoModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSuccess: () => void;
+  preselectedChannelId?: string;
 }
 
-export const UploadVideoModal = ({ open, onOpenChange, onSuccess }: UploadVideoModalProps) => {
+export const UploadVideoModal = ({ open, onOpenChange, onSuccess, preselectedChannelId }: UploadVideoModalProps) => {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
@@ -34,15 +47,35 @@ export const UploadVideoModal = ({ open, onOpenChange, onSuccess }: UploadVideoM
   const [submitting, setSubmitting] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadType, setUploadType] = useState<"file" | "url">("file");
-  const [userChannelId, setUserChannelId] = useState<string | null>(null);
-  const [userChannelName, setUserChannelName] = useState<string | null>(null);
+  const [userChannels, setUserChannels] = useState<Channel[]>([]);
+  const [selectedChannelId, setSelectedChannelId] = useState<string>("");
 
   useEffect(() => {
-    const channelId = localStorage.getItem("pubstream_channel_id");
-    const channelName = localStorage.getItem("pubstream_channel_name");
-    setUserChannelId(channelId);
-    setUserChannelName(channelName);
-  }, [open]);
+    // Load user's channels from localStorage
+    const channelsJson = localStorage.getItem("pubstream_channels");
+    if (channelsJson) {
+      const channels = JSON.parse(channelsJson) as Channel[];
+      setUserChannels(channels);
+      
+      // Set default selection
+      if (preselectedChannelId && channels.some(c => c.id === preselectedChannelId)) {
+        setSelectedChannelId(preselectedChannelId);
+      } else if (channels.length > 0) {
+        setSelectedChannelId(channels[0].id);
+      }
+    } else {
+      // Legacy support: check for single channel
+      const channelId = localStorage.getItem("pubstream_channel_id");
+      const channelName = localStorage.getItem("pubstream_channel_name");
+      if (channelId && channelName) {
+        const legacyChannel = { id: channelId, name: channelName };
+        setUserChannels([legacyChannel]);
+        setSelectedChannelId(channelId);
+        // Migrate to new format
+        localStorage.setItem("pubstream_channels", JSON.stringify([legacyChannel]));
+      }
+    }
+  }, [open, preselectedChannelId]);
 
   const handleVideoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -89,8 +122,8 @@ export const UploadVideoModal = ({ open, onOpenChange, onSuccess }: UploadVideoM
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!userChannelId) {
-      toast({ title: "Error", description: "Please create a channel first", variant: "destructive" });
+    if (!selectedChannelId) {
+      toast({ title: "Error", description: "Please select a channel", variant: "destructive" });
       return;
     }
 
@@ -142,7 +175,7 @@ export const UploadVideoModal = ({ open, onOpenChange, onSuccess }: UploadVideoM
           description: description.trim() || null,
           video_url: finalVideoUrl,
           thumbnail_url: finalThumbnailUrl,
-          channel_id: userChannelId,
+          channel_id: selectedChannelId,
         });
 
       if (error) throw error;
@@ -168,7 +201,7 @@ export const UploadVideoModal = ({ open, onOpenChange, onSuccess }: UploadVideoM
     }
   };
 
-  if (!userChannelId) {
+  if (userChannels.length === 0) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="w-[95vw] max-w-md mx-auto">
@@ -187,6 +220,8 @@ export const UploadVideoModal = ({ open, onOpenChange, onSuccess }: UploadVideoM
     );
   }
 
+  const selectedChannel = userChannels.find(c => c.id === selectedChannelId);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[95vw] max-w-lg mx-auto max-h-[90vh] overflow-y-auto">
@@ -197,10 +232,31 @@ export const UploadVideoModal = ({ open, onOpenChange, onSuccess }: UploadVideoM
           </DialogTitle>
         </DialogHeader>
         
-        <div className="mb-3 sm:mb-4 p-2 sm:p-3 bg-muted rounded-lg">
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            Uploading to: <span className="font-semibold text-foreground">{userChannelName}</span>
-          </p>
+        {/* Channel Selector */}
+        <div className="mb-3 sm:mb-4">
+          <Label className="text-xs sm:text-sm mb-1.5 block">Upload to Channel</Label>
+          {userChannels.length === 1 ? (
+            <div className="p-2 sm:p-3 bg-muted rounded-lg">
+              <p className="text-xs sm:text-sm text-foreground font-semibold">{selectedChannel?.name}</p>
+            </div>
+          ) : (
+            <Select value={selectedChannelId} onValueChange={setSelectedChannelId}>
+              <SelectTrigger className="w-full h-9 sm:h-10 bg-card border-border">
+                <SelectValue placeholder="Select a channel" />
+              </SelectTrigger>
+              <SelectContent className="bg-card border-border z-50">
+                {userChannels.map((channel) => (
+                  <SelectItem 
+                    key={channel.id} 
+                    value={channel.id}
+                    className="cursor-pointer"
+                  >
+                    {channel.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">

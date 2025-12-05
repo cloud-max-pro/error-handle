@@ -40,10 +40,15 @@ const ChannelPage = () => {
   const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
-    const savedChannel = localStorage.getItem("pubstream_channel");
-    if (savedChannel && id) {
-      const parsedChannel = JSON.parse(savedChannel);
-      setIsOwner(parsedChannel.id === id);
+    // Check if current channel belongs to user (support multiple channels)
+    const channelsJson = localStorage.getItem("pubstream_channels");
+    if (channelsJson && id) {
+      const channels = JSON.parse(channelsJson) as Array<{ id: string; name: string }>;
+      setIsOwner(channels.some(c => c.id === id));
+    } else {
+      // Legacy support
+      const savedChannelId = localStorage.getItem("pubstream_channel_id");
+      setIsOwner(savedChannelId === id);
     }
   }, [id]);
 
@@ -285,6 +290,7 @@ const ChannelPage = () => {
           fetchVideos();
           setIsUploadOpen(false);
         }}
+        preselectedChannelId={id}
       />
     </div>
   );
