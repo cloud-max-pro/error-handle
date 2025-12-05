@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Users, Play, Calendar, Upload } from "lucide-react";
+import { Users, Play, Calendar, Upload, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { UploadVideoModal } from "@/components/pubstream/UploadVideoModal";
+import { EditChannelModal } from "@/components/pubstream/EditChannelModal";
 
 interface Channel {
   id: string;
@@ -37,6 +38,7 @@ const ChannelPage = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [localUserName] = useState(() => localStorage.getItem("pubstream_username") || "");
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
@@ -210,16 +212,26 @@ const ChannelPage = () => {
                 <span>{videos.length} videos</span>
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               {isOwner && (
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={() => setIsUploadOpen(true)}
-                >
-                  <Upload className="h-4 w-4 mr-2" />
-                  Upload Video
-                </Button>
+                <>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => setIsEditOpen(true)}
+                  >
+                    <Settings className="h-4 w-4 mr-2" />
+                    Edit
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => setIsUploadOpen(true)}
+                  >
+                    <Upload className="h-4 w-4 mr-2" />
+                    Upload
+                  </Button>
+                </>
               )}
               {!isOwner && (
                 <Button
@@ -292,6 +304,15 @@ const ChannelPage = () => {
         }}
         preselectedChannelId={id}
       />
+
+      {channel && (
+        <EditChannelModal
+          open={isEditOpen}
+          onOpenChange={setIsEditOpen}
+          channel={channel}
+          onSuccess={fetchChannel}
+        />
+      )}
     </div>
   );
 };

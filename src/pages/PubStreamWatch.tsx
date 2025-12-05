@@ -311,7 +311,6 @@ const PubStreamWatch = () => {
             <VideoPlayer 
               videoUrl={video.video_url} 
               title={video.title}
-              theme="light"
             />
           </div>
 
