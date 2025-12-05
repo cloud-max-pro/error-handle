@@ -220,7 +220,6 @@ const PubStream = () => {
       <UploadVideoModal 
         open={showUploadVideo} 
         onOpenChange={setShowUploadVideo}
-        channels={channels}
         onSuccess={() => {
           fetchVideos();
           setShowUploadVideo(false);

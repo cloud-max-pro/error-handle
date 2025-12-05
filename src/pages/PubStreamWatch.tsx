@@ -4,6 +4,7 @@ import { ThumbsUp, Share2, Users, MessageCircle, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Navbar } from "@/components/Navbar";
+import { VideoPlayer } from "@/components/VideoPlayer";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -306,13 +307,11 @@ const PubStreamWatch = () => {
       <main className="pt-20 pb-12 px-4 md:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           {/* Video Player - White Theme */}
-          <div className="bg-white rounded-xl overflow-hidden shadow-lg mb-6">
-            <video
-              src={video.video_url}
-              controls
-              controlsList="nodownload"
-              className="w-full aspect-video"
-              style={{ colorScheme: "light" }}
+          <div className="mb-6">
+            <VideoPlayer 
+              videoUrl={video.video_url} 
+              title={video.title}
+              theme="light"
             />
           </div>
 
