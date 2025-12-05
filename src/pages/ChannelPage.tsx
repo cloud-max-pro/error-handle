@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Users, Play, Calendar } from "lucide-react";
+import { Users, Play, Calendar, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { UploadVideoModal } from "@/components/pubstream/UploadVideoModal";
 
 interface Channel {
   id: string;
@@ -35,6 +36,16 @@ const ChannelPage = () => {
   const [loading, setLoading] = useState(true);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [localUserName] = useState(() => localStorage.getItem("pubstream_username") || "");
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
+
+  useEffect(() => {
+    const savedChannel = localStorage.getItem("pubstream_channel");
+    if (savedChannel && id) {
+      const parsedChannel = JSON.parse(savedChannel);
+      setIsOwner(parsedChannel.id === id);
+    }
+  }, [id]);
 
   useEffect(() => {
     if (id) {
@@ -194,13 +205,27 @@ const ChannelPage = () => {
                 <span>{videos.length} videos</span>
               </div>
             </div>
-            <Button
-              variant={isSubscribed ? "outline" : "default"}
-              size="lg"
-              onClick={handleSubscribe}
-            >
-              {isSubscribed ? "Subscribed" : "Subscribe"}
-            </Button>
+            <div className="flex gap-2">
+              {isOwner && (
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => setIsUploadOpen(true)}
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  Upload Video
+                </Button>
+              )}
+              {!isOwner && (
+                <Button
+                  variant={isSubscribed ? "outline" : "default"}
+                  size="lg"
+                  onClick={handleSubscribe}
+                >
+                  {isSubscribed ? "Subscribed" : "Subscribe"}
+                </Button>
+              )}
+            </div>
           </div>
 
           {channel.description && (
@@ -252,6 +277,15 @@ const ChannelPage = () => {
           </div>
         </div>
       </main>
+
+      <UploadVideoModal
+        open={isUploadOpen}
+        onOpenChange={setIsUploadOpen}
+        onSuccess={() => {
+          fetchVideos();
+          setIsUploadOpen(false);
+        }}
+      />
     </div>
   );
 };
