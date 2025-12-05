@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      channels: {
+        Row: {
+          avatar_url: string | null
+          banner_url: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          subscriber_count: number | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          banner_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          subscriber_count?: number | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          banner_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          subscriber_count?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       comments: {
         Row: {
           anime_id: string
@@ -40,6 +73,146 @@ export type Database = {
           user_name?: string
         }
         Relationships: []
+      }
+      pub_comments: {
+        Row: {
+          comment_text: string
+          created_at: string
+          id: string
+          updated_at: string
+          user_name: string
+          video_id: string
+        }
+        Insert: {
+          comment_text: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_name: string
+          video_id: string
+        }
+        Update: {
+          comment_text?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_name?: string
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pub_comments_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "pub_videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pub_likes: {
+        Row: {
+          created_at: string
+          id: string
+          user_name: string
+          video_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_name: string
+          video_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_name?: string
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pub_likes_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "pub_videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pub_subscriptions: {
+        Row: {
+          channel_id: string
+          created_at: string
+          id: string
+          user_name: string
+        }
+        Insert: {
+          channel_id: string
+          created_at?: string
+          id?: string
+          user_name: string
+        }
+        Update: {
+          channel_id?: string
+          created_at?: string
+          id?: string
+          user_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pub_subscriptions_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "channels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pub_videos: {
+        Row: {
+          channel_id: string
+          created_at: string
+          description: string | null
+          id: string
+          likes_count: number | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          video_url: string
+          views: number | null
+        }
+        Insert: {
+          channel_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          likes_count?: number | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          video_url: string
+          views?: number | null
+        }
+        Update: {
+          channel_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          likes_count?: number | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          video_url?: string
+          views?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pub_videos_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "channels"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
