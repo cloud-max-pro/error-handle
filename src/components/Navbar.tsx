@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Menu, Home, Compass, Star, X, Tv, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "@/components/SearchBar";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/gear5-logo.png";
 
 export const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
