@@ -497,33 +497,6 @@ export const animeData: AnimeItem[] = [
     ],
   },
   {
-    id: 'gachlakuta',
-    title: 'Gachiakuta',
-    type: 'series',
-    description: 'In a world where people are banished to the abyss, a young man fights to clear his name and survive in the harsh wasteland.',
-    image: 'https://images.unsplash.com/photo-1601814933824-fd0b574dd592?w=800&q=80',
-    trailerUrl: 'https://play.zephyrflick.top/video/1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z',
-    genres: ['Action', 'Drama', 'Fantasy'],
-    year: 2025,
-    rating: 8.4,
-    status: 'completed',
-    network: 'funimation',
-    seasons: [
-      {
-        seasonNumber: 1,
-        title: 'Season 1',
-        episodes: [
-          {
-            episodeNumber: 1,
-            title: 'Banished',
-            videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-            duration: '24:00',
-          },
-        ],
-      },
-    ],
-  },
-  {
     id: 'sakamoto-days-part-2',
     title: 'Sakamoto Days Part 2',
     type: 'series',
