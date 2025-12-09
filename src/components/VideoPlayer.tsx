@@ -50,37 +50,35 @@ export const VideoPlayer = ({ videoUrl, title, onTimeUpdate }: VideoPlayerProps)
 
   const embedUrl = getEmbedUrl(videoUrl);
 
-  // Check if URL needs iframe (YouTube, Vimeo, etc.)
-  const isEmbedUrl = embedUrl.includes('youtube.com/embed') ||
-                      embedUrl.includes('vimeo.com') ||
-                      embedUrl.includes('player.');
+  // Check if URL is a direct video file (mp4, webm, etc.)
+  const isDirectVideoFile = /\.(mp4|webm|ogg|mov|avi|mkv)(\?.*)?$/i.test(embedUrl);
 
-  // For embed URLs, use iframe
-  if (isEmbedUrl) {
+  // For direct video files, use native browser controls with time tracking
+  if (isDirectVideoFile) {
     return (
       <div className="relative bg-black rounded-xl overflow-hidden shadow-lg">
-        <iframe
+        <video
+          ref={videoRef}
           src={embedUrl}
           className="w-full aspect-video"
           title={title}
-          allowFullScreen
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          style={{ border: 'none' }}
+          controls
+          playsInline
         />
       </div>
     );
   }
 
-  // For direct video files, use native browser controls
+  // For all other URLs (embeds, streaming sites), use iframe to show their native player
   return (
     <div className="relative bg-black rounded-xl overflow-hidden shadow-lg">
-      <video
-        ref={videoRef}
+      <iframe
         src={embedUrl}
         className="w-full aspect-video"
         title={title}
-        controls
-        playsInline
+        allowFullScreen
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        style={{ border: 'none' }}
       />
     </div>
   );
