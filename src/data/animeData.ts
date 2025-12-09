@@ -592,7 +592,7 @@ export const animeData: AnimeItem[] = [
     type: 'series',
     description: 'In a world where hunters — human warriors who possess supernatural abilities — must battle deadly monsters to protect the human race, a notoriously weak hunter named Sung Jinwoo finds himself in a seemingly endless struggle for survival. One day, after a brutal encounter in an overpowered dungeon wipes out his party and leaves him gravely injured, Jinwoo finds himself mysteriously reawakening with a new ability that allows him to level up infinitely.',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJrnG4_iod8CZXmtvOmcIayQTCAnXknp255A&s',
-    trailerUrl: 'https://www.youtube.com/watch?v=fzSb1EXu3EQ',
+    trailerUrl: 'https://www.youtube.com/watch?v=YvGSK8mIlt8',
     genres: ['Action', 'Adventure', 'Fantasy', 'Supernatural'],
     year: 2024,
     rating: 8.9,
