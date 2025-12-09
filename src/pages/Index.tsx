@@ -11,18 +11,18 @@ import { TrendingUp, Sparkles, Compass, Star, Tv, ArrowLeft } from "lucide-react
 import { useWatchProgress } from "@/hooks/useWatchProgress";
 
 const networks = [
-  { id: "crunchyroll", name: "Crunchyroll", color: "#F47521" },
-  { id: "netflix", name: "Netflix", color: "#E50914" },
-  { id: "disney-plus", name: "Disney+", color: "#113CCF" },
-  { id: "hulu", name: "Hulu", color: "#1CE783" },
-  { id: "amazon-prime", name: "Prime Video", color: "#00A8E1" },
-  { id: "funimation", name: "Funimation", color: "#5B0BB5" },
-  { id: "hidive", name: "HIDIVE", color: "#00BAFF" },
-  { id: "hbo-max", name: "Max", color: "#741DFF" },
-  { id: "apple-tv", name: "Apple TV+", color: "#FFFFFF" },
-  { id: "paramount-plus", name: "Paramount+", color: "#0064FF" },
-  { id: "peacock", name: "Peacock", color: "#9966FF" },
-  { id: "adult-swim", name: "Adult Swim", color: "#000000" },
+  { id: "crunchyroll", name: "Crunchyroll", color: "#F47521", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Crunchyroll_Logo.png/800px-Crunchyroll_Logo.png" },
+  { id: "netflix", name: "Netflix", color: "#E50914", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1920px-Netflix_2015_logo.svg.png" },
+  { id: "disney-plus", name: "Disney+", color: "#113CCF", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/1920px-Disney%2B_logo.svg.png" },
+  { id: "hulu", name: "Hulu", color: "#1CE783", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Hulu_Logo.svg/1920px-Hulu_Logo.svg.png" },
+  { id: "amazon-prime", name: "Prime Video", color: "#00A8E1", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Amazon_Prime_Video_logo.svg/1920px-Amazon_Prime_Video_logo.svg.png" },
+  { id: "funimation", name: "Funimation", color: "#5B0BB5", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Funimation_2016.svg/1920px-Funimation_2016.svg.png" },
+  { id: "hidive", name: "HIDIVE", color: "#00BAFF", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/HIDIVE_logo.svg/1920px-HIDIVE_logo.svg.png" },
+  { id: "hbo-max", name: "Max", color: "#741DFF", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Max_logo.svg/1920px-Max_logo.svg.png" },
+  { id: "apple-tv", name: "Apple TV+", color: "#000000", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Apple_TV_Plus_Logo.svg/1920px-Apple_TV_Plus_Logo.svg.png" },
+  { id: "paramount-plus", name: "Paramount+", color: "#0064FF", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Paramount_Plus.svg/1920px-Paramount_Plus.svg.png" },
+  { id: "peacock", name: "Peacock", color: "#000000", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/NBCUniversal_Peacock_Logo.svg/1920px-NBCUniversal_Peacock_Logo.svg.png" },
+  { id: "adult-swim", name: "Adult Swim", color: "#000000", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Adult_Swim_2003_logo.svg/1920px-Adult_Swim_2003_logo.svg.png" },
 ];
 
 const Index = () => {
@@ -168,11 +168,16 @@ const Index = () => {
                           onMouseEnter={(e) => e.currentTarget.style.boxShadow = `0 4px 20px ${network.color}40`}
                           onMouseLeave={(e) => e.currentTarget.style.boxShadow = `0 0 0 0 ${network.color}`}
                         >
-                          <div 
-                            className="h-12 w-full flex items-center justify-center rounded-lg font-bold text-white text-lg"
-                            style={{ backgroundColor: network.color === "#FFFFFF" ? "#333" : network.color }}
-                          >
-                            {network.name.charAt(0)}
+                          <div className="h-12 w-full flex items-center justify-center rounded-lg p-2">
+                            <img 
+                              src={network.logo} 
+                              alt={network.name}
+                              className="h-full max-w-full object-contain"
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                                e.currentTarget.parentElement!.innerHTML = `<span class="font-bold text-white text-lg">${network.name}</span>`;
+                              }}
+                            />
                           </div>
                           <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
                             {network.name}
