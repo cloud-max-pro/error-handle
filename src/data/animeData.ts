@@ -623,10 +623,10 @@ export const animeData: AnimeItem[] = [
     genres: ['Action', 'School', 'Comedy', 'Drama'],
     year: 2022,
     rating: 7.6,
-    status: 'Complete',
+    status: 'completed',
     isSpotlight: true,
     spotlightRank: 0,
-    network: 'Netflix',
+    network: 'netflix',
     seasons: [
       {
         seasonNumber: 1,
