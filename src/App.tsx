@@ -11,6 +11,7 @@ import Auth from "./pages/Auth";
 import PubStream from "./pages/PubStream";
 import PubStreamWatch from "./pages/PubStreamWatch";
 import ChannelPage from "./pages/ChannelPage";
+import LongSeries from "./pages/LongSeries";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/watch/:id" element={<Watch />} />
+            <Route path="/long-series" element={<LongSeries />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/pub-stream" element={
               <ProtectedRoute>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Menu, Home, Compass, Star, X, Tv, Play } from "lucide-react";
+import { Menu, Home, Compass, Star, X, Tv, Play, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "@/components/SearchBar";
 import logo from "@/assets/gear5-logo.png";
@@ -13,6 +13,7 @@ export const Navbar = () => {
     { to: "/?view=browse", label: "Browse", icon: Compass },
     { to: "/?view=networks", label: "Networks", icon: Tv },
     { to: "/?view=top-rated", label: "Top Rated", icon: Star },
+    { to: "/long-series", label: "Long Series", icon: Layers },
     { to: "/pub-stream", label: "Pub Stream", icon: Play },
   ];
 
